@@ -5,7 +5,7 @@ void test_large_string() {
     memset(str, 'A', sizeof(str) - 1);
     str[sizeof(str) - 1] = '\0';
 
-    int saved_stdout = redirect_stdout_to_file("test_large_string.txt");
+    int saved_stdout = redirect_stdout_to_file("exits/test_large_string.txt");
     if (saved_stdout == -1) {
         perror("Error al redirigir la salida");
         return;
@@ -21,7 +21,7 @@ void test_large_number() {
     int large_num = 2147483647;
     int small_num = -2147483648;
 
-	int saved_stdout = redirect_stdout_to_file("test_large_number.txt");
+	int saved_stdout = redirect_stdout_to_file("exits/test_large_number.txt");
     if (saved_stdout == -1) {
         perror("Error al redirigir la salida");
         return;
@@ -35,7 +35,7 @@ void test_large_number() {
 }
 
 void test_multiple_calls() {
-	int saved_stdout = redirect_stdout_to_file("test_multiple_calls.txt");
+	int saved_stdout = redirect_stdout_to_file("exits/test_multiple_calls.txt");
     if (saved_stdout == -1) {
         perror("Error al redirigir la salida");
         return;
@@ -50,7 +50,7 @@ void test_multiple_calls() {
 }
 
 void test_large_hexadecimal() {
-	int saved_stdout = redirect_stdout_to_file("test_large_hexadecimal.txt");
+	int saved_stdout = redirect_stdout_to_file("exits/test_large_hexadecimal.txt");
     if (saved_stdout == -1) {
         perror("Error al redirigir la salida");
         return;
@@ -66,7 +66,7 @@ void test_large_hexadecimal() {
 }
 
 void test_empty_string() {
-	int saved_stdout = redirect_stdout_to_file("test_empty_string.txt");
+	int saved_stdout = redirect_stdout_to_file("exits/test_empty_string.txt");
     if (saved_stdout == -1) {
         perror("Error al redirigir la salida");
         return;
@@ -83,7 +83,7 @@ void test_empty_string() {
 }
 
 void test_performance() {
-	int saved_stdout = redirect_stdout_to_file("test_performance.txt");
+	int saved_stdout = redirect_stdout_to_file("exits/test_performance.txt");
     if (saved_stdout == -1) {
         perror("Error al redirigir la salida");
         return;

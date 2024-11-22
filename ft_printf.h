@@ -6,7 +6,7 @@
 /*   By: cvarela- <cvarela-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:59:30 by cvarela-          #+#    #+#             */
-/*   Updated: 2024/11/22 13:29:07 by cvarela-         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:39:33 by cvarela-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <time.h>
 # include <string.h>
 # include <fcntl.h>
+# include "unity.h"
 
 int				ft_putchar(int c);
 int				ft_putnbr(int n);

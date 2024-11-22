@@ -1,6 +1,4 @@
 #include "ft_printf.h"
-#include "unity.h"
-#include <stdio.h>
 
 void setUp(void) {
 }

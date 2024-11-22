@@ -3,7 +3,7 @@
 void log_result(const char *test_name, const char *result) {
     char filename[100];
 
-    snprintf(filename, sizeof(filename), "%s_result.txt", test_name);
+    snprintf(filename, sizeof(filename), "exits/%s_result.txt", test_name);
 
     printf("Resultado de la prueba '%s': %s\n", test_name, result);
 }
