@@ -75,14 +75,18 @@ int main(void) {
     RUN_TEST(test_ft_hexa_pointer);
     RUN_TEST(test_ft_percent);
 
-	UNITY_END();
-
-	UNITY_BEGIN();
 
     RUN_TEST(test_ft_printf_basic_formats);
     RUN_TEST(test_ft_printf_with_null);
     RUN_TEST(test_ft_printf_multiple_formats);
     RUN_TEST(test_ft_printf_edge_cases);
 
+
+    RUN_TEST(test_large_string);
+    RUN_TEST(test_large_number);
+    RUN_TEST(test_multiple_calls);
+    RUN_TEST(test_large_hexadecimal);
+	RUN_TEST(test_empty_string);
+	RUN_TEST(test_performance);
 	return UNITY_END();
 }
