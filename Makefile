@@ -5,12 +5,10 @@
 #                                                     +:+ +:+         +:+      #
 #    By: cvarela- <cvarela-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/21 12:22:38 by cvarela-          #+#    #+#              #
-#    Updated: 2023/10/20 21:03:57 by cvarela-         ###   ########.fr        #
+#    Created: 2023/11/11 17:00:12 by cvarela-          #+#    #+#              #
+#    Updated: 2023/11/11 17:00:16 by cvarela-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-
 
 NAME = libftprintf.a
 CC = gcc
@@ -23,7 +21,8 @@ LIB = ar crs
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = ft_printf.c
+SRCS = ft_printf.c \
+		ft_printf_utils.c
 OBJS = ${SRCS:.c=.o}
 
 all: ${NAME}
