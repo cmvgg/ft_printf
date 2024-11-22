@@ -5,200 +5,92 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cvarela- <cvarela-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 22:47:06 by cvarela-          #+#    #+#             */
-/*   Updated: 2023/10/21 02:06:27 by cvarela-         ###   ########.fr       */
+/*   Created: 2023/11/11 16:59:57 by cvarela-          #+#    #+#             */
+/*   Updated: 2023/11/11 16:59:58 by cvarela-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "ft_printf.h"
 
-typedef struct t_OutputBuffer
+int	ft_percent(char c, va_list list)
 {
-    char *output;
-    size_t size;
-    size_t length;
-} t_OutputBuffer;
-
-void initialize_output_buffer(t_OutputBuffer *buffer, size_t initial_size)
-{
-    buffer->size = initial_size;
-    buffer->output = (char *)malloc(buffer->size);
-    buffer->output[0] = '\0';
-    buffer->length = 0;
+	if (c == 'c')
+		return (ft_putchar(va_arg(list, int)));
+	else if (c == 's')
+		return (ft_putstr(va_arg(list, char *)));
+	else if (c == 'p')
+		return (ft_hexa_pointer(va_arg(list, unsigned long)));
+	else if (c == 'd')
+		return (ft_putnbr(va_arg(list, int)));
+	else if (c == 'i')
+		return (ft_putnbr(va_arg(list, int)));
+	else if (c == 'u')
+		return (ft_putnbru(va_arg(list, unsigned int)));
+	else if (c == 'x')
+		return (ft_hexa(va_arg(list, unsigned int), 1));
+	else if (c == 'X')
+		return (ft_hexa(va_arg(list, unsigned int), 2));
+	else
+		return (ft_putchar('%'));
 }
 
-void free_output_buffer(t_OutputBuffer *buffer)
+int	ft_hexa(unsigned long n, int loworup)
 {
-    free(buffer->output);
-    buffer->output = NULL;
+	char	c;
+	int		count;
+	char	*str;
+
+	count = 0;
+	if (loworup == 1)
+	str = "0123456789abcdef";
+	else
+	str = "0123456789ABCDEF";
+	if (n >= 16)
+		count += ft_hexa(n / 16, loworup);
+	c = str[n % 16];
+	write(1, &c, 1);
+	count++;
+	return (count);
 }
 
-void append_to_output_buffer(t_OutputBuffer *buffer, const char *str)
+int	ft_hexa_pointer(unsigned long hex)
 {
-    size_t str_len = strlen(str);
-    size_t curr_len = buffer->length;
+	int		re_hex;
 
-    if (curr_len + str_len + 1 > buffer->size)
-    {
-        buffer->size *= 2;
-        buffer->output = (char *)realloc(buffer->output, buffer->size);
-    }
-
-    strncat(buffer->output, str, str_len);
-    buffer->length += str_len;
+	re_hex = 2;
+	if (write (1, "0x", 2) == -1)
+		return (-1);
+	re_hex += ft_hexa(hex, 1);
+	return (re_hex);
 }
 
-void print_char(t_OutputBuffer *output, char c)
+int	ft_printf(const char *format, ...)
 {
-    char str[2] = {c, '\0'};
-    append_to_output_buffer(output, str);
+	va_list	list;
+	int		i;
+	int		e;
+	int		c;
+
+	i = 0;
+	c = 0;
+	va_start(list, format);
+	while (format[i])
+	{
+		if (format[i] == '%')
+		{
+			e = ft_percent (format [i + 1], list);
+			i += 2;
+		}
+		else
+			e = ft_putchar(format[i++]);
+		if (e == -1)
+			return (-1);
+		c += e;
+	}
+	return (c);
 }
 
-void print_str(t_OutputBuffer *output, const char *str)
+/*int main()
 {
-    if (str == NULL)
-        append_to_output_buffer(output, "(null)");
-    else
-        append_to_output_buffer(output, str);
-}
-
-void print_int(t_OutputBuffer *output, int num)
-{
-    char num_str[20];
-    int i = 0;
-
-    if (num < 0)
-    {
-        num_str[i++] = '-';
-        num = -num;
-    }
-
-    while (num)
-    {
-        num_str[i++] = (num % 10) + '0';
-        num /= 10;
-    }
-
-    append_to_output_buffer(output, num_str);
-}
-
-void print_hex(t_OutputBuffer *output, unsigned long long num, int uppercase)
-{
-    char num_str[20];
-    int i = 0;
-
-    if (num < 0)
-    {
-        num_str[i++] = '-';
-        num = -num;
-    }
-
-    while (num)
-    {
-        if (num % 16 < 10)
-            num_str[i++] = (num % 16) + '0';
-        else
-        {
-            if (uppercase)
-                num_str[i++] = (num % 16) + 'A' - 10;
-            else
-                num_str[i++] = (num % 16) + 'a' - 10;
-        }
-        num /= 16;
-    }
-
-    append_to_output_buffer(output, num_str);
-}
-
-void print_output(t_OutputBuffer *output)
-{
-    write(1, output->output, output->length);
-}
-
-int ft_printf(const char *format, ...)
-{
-    va_list args;
-    t_OutputBuffer output;
-    const char *ptr;
-    char specifier;
-    char *str;
-    int num;
-
-    char c;
-    unsigned long long ull_num;
-
-    va_start(args, format);
-    initialize_output_buffer(&output, 10);
-    ptr = format;
-
-    // Verificar si la cadena de formato está vacía
-    if (format[0] == '\0')
-    {
-        va_end(args);
-        free_output_buffer(&output); // Liberar la memoria antes de salir
-        return 0; // No hay nada que imprimir
-    }
-
-    while (*ptr != '\0')
-    {
-        if (*ptr == '%')
-        {
-            ptr++;
-            specifier = *ptr;
-
-            if (specifier == 'c')
-            {
-                c = (char)va_arg(args, int);
-                print_char(&output, c);
-            }
-            else if (specifier == 's')
-            {
-                str = va_arg(args, char *);
-                print_str(&output, str);
-            }
-            else if (specifier == 'd' || specifier == 'i')
-            {
-                num = va_arg(args, int);
-                print_int(&output, num);
-            }
-            else if (specifier == 'x' || specifier == 'X')
-            {
-                ull_num = va_arg(args, unsigned long long);
-                print_hex(&output, ull_num, specifier == 'X');
-            }
-            else
-            {
-                print_char(&output, '%');
-                print_char(&output, specifier);
-            }
-        }
-        else
-        {
-            print_char(&output, *ptr);
-        }
-
-        ptr++;
-    }
-
-    va_end(args);
-
-    print_output(&output);
-    free_output_buffer(&output); // Liberar la memoria antes de salir
-
-    return output.length;
-}
-
-
-/*
-int main(void)
-{
-    ft_printf("\r");
-    printf("\nft\n");
-    printf("\r");
-    return 0;
+	ft_printf("%sx", "{} al$#@@@^&$$^#^@@^$*((&");
 }*/
-
