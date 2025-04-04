@@ -1,3 +1,4 @@
+f2a6d7d - Cesar Manuel Varela Garcia, 3 minutes ago : Actualización de: Makefile  [04/04/2025 10:52]
 0122a50 - Cesar Manuel Varela Garcia, 4 months ago : Correcciones de linting 22/11/2024--22:36
 99a3425 - Cesar Manuel Varela Garcia, 4 months ago : Correcciones de linting 22/11/2024--13:43
 24f16c0 - Cesar Manuel Varela Garcia, 4 months ago : Correcciones de linting 22/11/2024--13:07
